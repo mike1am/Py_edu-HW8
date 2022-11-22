@@ -84,7 +84,7 @@ def showEmployees(emplList):
         print("\nСотрудники не найдены")
 
 
-def getNewEmplData(emplList):
+def getEmplData(emplList):
     if len(emplList) != 1:
         errorMsg("Данные сотрудников можно редактировать только по одному.")
         return

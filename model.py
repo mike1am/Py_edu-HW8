@@ -1,9 +1,20 @@
+# Хранилища данных - списки словарей
+# departments:
+# id - уникальный ид. отдела
+# name - наименование отдела
+# nbgId - ид. руководителя
+# employees:
+# id - уникальный ид. сотрудника
+# fio - ФИО сотрудника
+# depId - ид. отдела 
 departments = []
 employees = []
 
 
+# Возвращает выборку из списка словарей по заданным кретериям
 # mask - словарь, содержаний поля для поиска
-def getDataList(mask, dataList, compareFunc=lambda a, b: a == b):
+# compareFunc - функция сравнения элементов маски и словаря
+def getDataList(mask, dataList, compareFunc=lambda maskVal, dictVal: maskVal == dictVal):
     resList = []
     for objDict in dataList:
         matchFl = True
@@ -62,6 +73,7 @@ def formEmplOut(emplData=None):
     return outList
 
 
+# data - список из 2х эл. - [0] - список отделов, [1] - список сотрудников
 def addImpData(data):
     storeLists = (departments, employees)
     
@@ -76,6 +88,9 @@ def addImpData(data):
             storeLists[ind].append(item)
 
 
+# Формирует список из 2х списков для экспорта - отделы и сотрудники
+# expNames - кортеж из 2х строк - имя отдела и имя сотрудника
+# используется только имя отдела, как маска поиска
 def prepExpData(expNames=None):
     if not expNames: expNames = ("", "") # экспорт всех данных
     depList = getDataList({'name': expNames[0]}, departments,
@@ -111,20 +126,6 @@ def addEmpl(emplData):
     })
 
 
-# mask - словарь, содержаний поля для поиска
-def getDataList(mask, dataList, compareFunc=lambda a, b: a == b):
-    resList = []
-    for objDict in dataList:
-        matchFl = True
-        for key, val in mask.items():
-            if not compareFunc(val, objDict[key]):
-                matchFl = False
-                break
-        if matchFl: resList.append(objDict)
-
-    return resList
-
-
 def modifyEmplData(emplDic):
     empl = getDataList({'id': emplDic['id']}, employees)[0] # возможно, понадобится проверка на длину возвр. списка
     empl['fio'] = emplDic['fio']
@@ -154,7 +155,7 @@ def delEmpls(emplList):
 def delDep(depName):
     depList = getDataList({'name': depName}, departments,\
             lambda depName, name: depName.lower() == name.lower())
-    if len(depList) == 1 and not getDataList({'depId': depList[0]['id']}, employees): # отдел единственнен и без сотрудников
+    if len(depList) == 1 and not getDataList({'depId': depList[0]['id']}, employees): # отдел единственный и без сотрудников
         for depInd, dep in enumerate(departments):
             if dep['id'] == depList[0]['id']:
                 departments.pop(depInd)

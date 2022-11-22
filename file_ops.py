@@ -9,6 +9,7 @@ def writeFile(expList, fName):
         errorMsg("Ошибка записи в файл.")
 
 
+# Разворачивает структуру expData для записи файлов экспорта
 def writeDataFiles(expData):
     for fName, expList in zip(expData['fNames'], expData['fData']):
         writeFile(expList, fName)
@@ -27,6 +28,8 @@ def readFile(fName):
         return readList
 
 
+# Читает 2 файла в соответствии с кортежем из 2х имён файлов (отделов и сотрудников)
+# возвращает список из 2х списков строк
 def readDataFiles(fList):
     resList = []
     for fName in fList:

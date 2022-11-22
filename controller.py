@@ -1,11 +1,14 @@
-from model import formDepOut, formEmplOut, addImpData, prepExpData, addDep, addEmpl,\
-    modifyEmplData, delEmpls, delDep
-from ui import menu, showDeps, showEmployees, inputDeps, inputImpFilename, inputExpFileName,\
-    inputDepName, inputEmplData, errorMsg, getNewEmplData, requestToDel
+from model import formDepOut, formEmplOut, addImpData, prepExpData, addDep,\
+    addEmpl, modifyEmplData, delEmpls, delDep
+from ui import menu, showDeps, showEmployees, inputDeps, inputImpFilename,\
+    inputExpFileName, inputDepName, inputEmplData, errorMsg, getEmplData, requestToDel
 from file_ops import readDataFiles, writeDataFiles
 from imp_exp import parseCSVData, convertCSVData
 
 
+# Дополнение данных для записи именем файла
+# dataToWrite - список из 2х элементов (для отделов и сотрудников),
+# каждый из которых - список строк для вывода
 def prepWriteData(dataToWrite):
     if not dataToWrite[0] and not dataToWrite[1]:
         errorMsg("Нет данных для экспорта.")
@@ -31,17 +34,26 @@ def exitProgram(_=None):
 
 
 ACTIONS = {
-    1: {'desc': "Вывести список отделов", 'handlers': [formDepOut, showDeps]},
-    2: {'desc': "Вывести список сотрудников отделов", 'handlers': [inputDeps, formEmplOut, showEmployees]},
-    3: {'desc': "Добавить отдел", 'handlers': [inputDepName, addDep]},
-    4: {'desc': "Добавить сотрудника", 'handlers': [inputEmplData, addEmpl]},
-    5: {'desc': "Редактировать данные сотрудника", 'handlers': [inputEmplData, formEmplOut, showEmployees,
-        getNewEmplData, modifyEmplData]},
-    6: {'desc': "Уволить сотрудников", 'handlers': [inputEmplData, formEmplOut, showEmployees, requestToDel, delEmpls]},
-    7: {'desc': "Удалить отдел (отдел не должен содержать сотрудников)", 'handlers': [inputDepName, delDep]},
-    8: {'desc': "Экспорт отделов в CSV", 'handlers': [inputDeps, prepExpData, convertCSVData, prepWriteData, writeDataFiles]},
-    9: {'desc': "Импорт данных из CSV", 'handlers': [inputImpFilename, readDataFiles, parseCSVData, addImpData]},
-    0: {'desc': "Выход", 'handlers': [prepExpData, convertCSVData, prepSaveData, writeDataFiles, exitProgram]},
+    1: {'desc': "Вывести список отделов",
+        'handlers': [formDepOut, showDeps]},
+    2: {'desc': "Вывести список сотрудников отделов",
+        'handlers': [inputDeps, formEmplOut, showEmployees]},
+    3: {'desc': "Добавить отдел",
+        'handlers': [inputDepName, addDep]},
+    4: {'desc': "Добавить сотрудника",
+        'handlers': [inputEmplData, addEmpl]},
+    5: {'desc': "Редактировать данные сотрудника",
+        'handlers': [inputEmplData, formEmplOut, showEmployees, getEmplData, modifyEmplData]},
+    6: {'desc': "Уволить сотрудников",
+        'handlers': [inputEmplData, formEmplOut, showEmployees, requestToDel, delEmpls]},
+    7: {'desc': "Удалить отдел (отдел не должен содержать сотрудников)",
+        'handlers': [inputDepName, delDep]},
+    8: {'desc': "Экспорт отделов в CSV",
+        'handlers': [inputDeps, prepExpData, convertCSVData, prepWriteData, writeDataFiles]},
+    9: {'desc': "Импорт данных из CSV",
+        'handlers': [inputImpFilename, readDataFiles, parseCSVData, addImpData]},
+    0: {'desc': "Выход",
+        'handlers': [prepExpData, convertCSVData, prepSaveData, writeDataFiles, exitProgram]},
 }    
 
 
